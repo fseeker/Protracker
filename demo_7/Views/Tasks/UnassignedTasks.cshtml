@@ -1,0 +1,19 @@
+﻿@model IEnumerable<Tasks>
+@{
+    ViewData["Title"] = "UnassignedTasks";
+}
+
+<h1>UnassignedTasks</h1>
+<table class="table table-bordered">
+    @foreach (var item in Model)
+    {   
+        <tr>
+            <td>@item.Name</td>
+            <td>@item.Description</td>
+            <td>@item.CreateDate</td>
+            <td>
+                <a class="btn btn-success" asp-action="AssignTask" asp-route-id="@item.Id">Add Employees</a>
+            </td>
+        </tr>
+    }
+</table>

@@ -1,0 +1,56 @@
+﻿@using System.Collections.Generic
+ 
+@model List<demo_7.Models.Tasks>
+
+@{ 
+    var Project = ViewBag.Project as Project;
+    ViewData["Title"] = Project.Name;
+}
+
+<div class="container">
+    <h3>Tasks of @Project.Name</h3>
+</div>
+<table class="table table-hover table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Description
+            </th>
+            <th>
+                Status
+            </th>
+            <th>
+                CreateDate
+            </th>
+            <th>
+                EndDate
+            </th>            
+
+        </tr>
+    </thead>
+    
+    @foreach (var item in Model)
+    {
+        <tr>      
+            <td>                
+                @item.Name
+            </td>
+            <td>
+                @item.Description
+            </td>
+            <td>
+                @item.Status
+            </td>
+            <td>
+                @item.CreateDate.ToString("dd-MMM-yyyy")
+            </td>
+            <td>
+                @item.EndDate.ToString("dd-MMM-yyyy")
+            </td>            
+            
+        </tr>        
+    }
+</table>

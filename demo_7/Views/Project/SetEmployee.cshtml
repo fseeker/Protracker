@@ -1,0 +1,121 @@
+﻿@model PaginatedList<Employee>
+@using System.Linq
+
+@{
+    ViewData["Title"] = ViewBag.ProjectName;
+    int CurrentPage = Model.PageIndex;
+    int TotalPage = Model.TotalPages;
+    var next = Model.HasNextPage ? "" : "disabled";
+    var prev = Model.HasPreviousPage ? "" : "disabled";
+
+    int i = (CurrentPage - 1) * ViewBag.PageSize + 1;
+    var roles = ViewBag.Roles as List<EmployeeRoles>;
+
+    var Project = ViewBag.Project as Project;
+}
+
+<div class="row">
+    <div class="col-sm-4 align-bottom">
+        <h3 class="align-bottom">set employee</h3>
+    </div>
+    <div class="col-sm-4">
+        <h1 class="align-text-middle">@Project.Name</h1>
+    </div>
+    <div class="col-sm-4">
+        <a class="btn btn-outline-secondary float-right p-2 m-2" asp-action="ProjectDetails" asp-route-id="@Project.Id">Back to Project</a>
+    </div>
+</div>
+<form method="get">
+    <input type="search" name="usertext" placeholder="Search" aria-label="Search" value="@ViewBag.searchWord" />
+</form>
+<table class="table table-hover table-bordered">
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @item.Name;
+            </td>
+            <td>
+                @item.Designation;
+            </td>
+            <td>                    
+                @*@string.Join(", ", item.InvolvedProjects.Select(ip => ip.Project.Name).ToList())*@
+                @foreach(var p in item.InvolvedProjects)
+                {
+                    <a asp-controller="Project" asp-action="ProjectDetails" asp-route-id="@p.Project.Id">@p.Project.Name</a><i>&nbsp;</i>
+                }
+            </td>
+            <td>
+                <form asp-action="SetEmployee"  asp-route-usertext="@ViewBag.searchWord" asp-route-page="@CurrentPage">
+                    <input type="hidden" value="@item.Id" name="employeeId" />
+                    <input type="hidden" value="@Project.Id" name="projectId" />
+                    <div class="dropdown">                        
+                        <select class="dropdown" name="roleId">
+                            <option value="">--Select Role--</option>
+                            @foreach (var r in roles)
+                            {
+                                @if (r.IsProjectRole == true)
+                                {
+                                    <option class="dropdown-item" value="@r.RoleId">@r.Role</option>
+                                }
+
+                            }
+                        </select>
+                    </div>
+                    <button class="btn btn-outline-success" type="submit">Add</button>
+                </form>
+            </td>
+        </tr>
+    }
+</table>
+
+<ul class="pagination">
+    <li class="">
+        <a asp-action="SetEmployee"
+           asp-route-sortOrder="@ViewBag.sortparam"
+           asp-route-usertext="@ViewBag.sword"
+           asp-route-page="1" class="btn btn-dark">First</a>
+    </li>
+    <li class="page-item @prev">
+        <a asp-action="SetEmployee"
+           asp-route-sortOrder="@ViewBag.sortparam"
+           asp-route-usertext="@ViewBag.sword"
+           asp-route-page="@(CurrentPage-1)" class="btn btn-primary @prev">Prev</a>
+    </li>
+    @for (int k = 1; k <= Model.TotalPages; k++)
+    {
+        if (k >= CurrentPage - 5 && k <= CurrentPage + 5)
+        {
+            if (k == CurrentPage)
+            {
+                <li class="page-item @(k==CurrentPage?"active":"")">
+                    <a asp-action="SetEmployee"
+                       asp-route-sortOrder="@ViewBag.sortparam"
+                       asp-route-usertext="@ViewBag.sword"
+                       asp-route-page="@k" class="btn btn-warning">@k</a>
+                </li>
+            }
+            else
+            {
+                <li class="page-item @(k==CurrentPage?"active":"")">
+                    <a asp-action="SetEmployee"
+                       asp-route-sortOrder="@ViewBag.sortparam"
+                       asp-route-usertext="@ViewBag.sword"
+                       asp-route-page="@k" class="btn btn-secondary">@k</a>
+                </li>
+            }
+        }
+    }
+    <li class="page-item @next">
+        <a asp-action="SetEmployee"
+           asp-route-sortOrder="@ViewBag.sortparam"
+           asp-route-usertext="@ViewBag.sword"
+           asp-route-page="@(CurrentPage+1)" class="btn btn-primary @next">Next</a>
+    </li>
+    <li>
+        <a asp-action="SetEmployee"
+           asp-route-sortOrder="@ViewBag.sortparam"
+           asp-route-usertext="@ViewBag.sword"
+           asp-route-page="@Model.TotalPages" class="btn btn-success">Last</a>
+    </li>
+</ul>

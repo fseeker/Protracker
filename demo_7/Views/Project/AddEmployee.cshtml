@@ -1,0 +1,23 @@
+﻿@using System.Collections.Generic 
+@model IEnumerable<demo_7.Models.Employee>; 
+@{
+    ViewData["Title"] = "AddEmployee";
+}
+
+<h1>@ViewBag.ProjectName</h1>
+<h3>Add Employees</h3>
+
+<div class="container">
+    @foreach (var item in Model)
+	{
+		 <div class="card">
+             <div class="card-header">
+                 @item.Name
+                 <img src="~/Images/pngtree-user-vector-avatar-png-image_1541962.jpg" />
+             </div>
+             <div class="card-body">
+
+             </div>
+		 </div>
+	}
+</div>

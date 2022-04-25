@@ -1,0 +1,49 @@
+﻿@model IEnumerable<demo_7.Models.UpdateProject>
+
+@{
+    var project = ViewBag.project as Project;
+    ViewData["Title"] = "All Updates of " + project.Name;
+}
+
+<h1>Update history of @project.Name</h1>
+
+<table class="table table-bordered">
+    <thead class="table-dark">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(Model => Model.PushDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(Model => Model.Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(Model => Model.Version)
+            </th>
+            <th>
+                @Html.DisplayNameFor(Model => Model.Description)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.PushDate
+                </td>
+                <td>
+                    @item.Status
+                </td>
+                <td>
+                    @item.Version
+                </td>
+                <td>
+                    @item.Description
+                </td>
+            </tr>
+
+        }
+    </tbody>
+</table>
+
+

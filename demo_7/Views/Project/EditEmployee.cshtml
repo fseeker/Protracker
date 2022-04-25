@@ -1,0 +1,51 @@
+﻿
+@model IEnumerable<Employee> 
+@{
+    ViewData["Title"] = "EditEmployee";
+
+    var roles = ViewBag.roles as List<EmployeeRoles>;
+}
+
+<h1>@ViewBag.Project.Name</h1>
+<h3>Edit Employees</h3>
+
+<table class="table table-bordered">
+    <tr>
+        <th>
+            Name
+        </th>
+        <th>
+            Role
+        </th>
+        <th>Actions</th>
+    </tr>
+    @foreach (var item in Model)
+	{
+		 <tr>
+             <td>
+                 @item.Name
+             </td>
+             <td>
+                 @item.InvolvedProjects.First().Role.Role
+             </td>
+             <td>
+                 <form asp-action="EditEmployeeRole">
+                     <input type="hidden" value="@item.Id" name="empId" />
+                     <input type="hidden" value="@ViewBag.Project.Id" name="projectId" />
+                     <select class="dropdown" name="roleId">
+                         <option>---Select New Role---</option>
+                         @foreach (var role in roles)
+                         {
+                             <option class="dropdown-item" value="@role.RoleId">@role.Role</option>
+                         }
+                     </select>
+                     <button type="submit" class="btn btn-dark">Change Role</button>
+                 </form>
+
+                 <a class="btn btn-danger" asp-action="DeleteEmployee" asp-route-empId="@item.Id" asp-route-projectId="@ViewBag.Project.Id">Remove</a>
+                 
+             </td>
+         </tr>
+	}
+</table>
+

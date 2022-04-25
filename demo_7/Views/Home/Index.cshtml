@@ -1,0 +1,145 @@
+﻿@{ 
+    ViewData["Title"] = "Home";
+
+    var todo = ViewBag.todo as List<Tasks>;
+    var urgent = ViewBag.urgent as List<Tasks>;
+    var complete = ViewBag.complete as List<Tasks>;
+}
+<style>
+    h3  {
+        font-family: Arial, Helvetica, sans-serif;
+        font-weight: bold;
+        color: dimgrey;
+    }
+</style>
+<h2 class="align-self-center">Protracker</h2>
+
+<div class="row">
+    <div class="col-sm-4">
+        <div class="container-fluid m-2 p-1" style="background: linear-gradient(aqua,white)">
+            <h3>TODO</h3>
+            @foreach (var item in todo)
+            {
+                <div class="card m-1" style="width: stretch">
+                    <div class="card-body">
+                        <h5 class="card-title">@item.Name</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Created by: @item.CreatedBy.Name</h6>
+                        <p>@item.Description</p>
+                        <p>
+                            Deadline:
+                            @{
+                                DateTime d1 = DateTime.Now;
+                                DateTime d2 = @item.EndDate;
+                                TimeSpan difference = d2 - d1;
+
+                                var days = difference.TotalDays;
+
+                            }
+                            @if (days < 0)
+                            {
+                                days = 0;
+                            }
+
+                            @((int)days) days
+                        </p>
+                        <p class="text-muted">
+                            Assigned to:
+                            <span class="text-dark">
+                                @string.Join(", ", item.InvolvedEmployees.Select(x => x.Employee.Name).ToList());
+                            </span>
+                        </p>
+                        <span>
+                            <a class="card-link" asp-controller="Tasks" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                            <a class="btn btn-sm btn-success float-right" asp-controller="Tasks" asp-action="TaskComplete" asp-route-TaskId="@item.Id"><i class='bx bx-check-double'></i> Complete</a>
+                        </span>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="container-fluid m-2 p-1" style="background: linear-gradient(red,white)">
+            <h3>URGENT</h3>
+            @foreach (var item in urgent)
+            {
+                <div class="card m-1" style="width: stretch">
+                    <div class="card-body">
+                        <h5 class="card-title">@item.Name</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Created by: @item.CreatedBy.Name</h6>
+                        <p>@item.Description</p>
+                        <p>
+                            Deadline:
+                            @{
+                                DateTime d1 = DateTime.Now;
+                                DateTime d2 = @item.EndDate;
+                                TimeSpan difference = d2 - d1;
+
+                                var days = difference.TotalDays;
+
+                            }
+                            @if (days < 0)
+                            {
+                                days = 0;
+                            }
+
+                            @((int)days) days
+                        </p>
+                        <p class="text-muted">
+                            Assigned to:
+                            <span class="text-dark">
+                                @string.Join(", ", item.InvolvedEmployees.Select(x => x.Employee.Name).ToList());
+                            </span>
+                        </p>
+                        <span>
+                            <a class="card-link" asp-controller="Tasks" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                            <a class="btn btn-sm btn-success float-right" asp-controller="Tasks" asp-action="TaskComplete" asp-route-TaskId="@item.Id"><i class='bx bx-check-double'></i> Complete</a>
+                        </span>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="col-sm-4">
+        <div class="container-fluid m-2 p-1" style="background: linear-gradient(lawngreen,white)">
+            <h3 class="align-items-center">COMPLETED</h3>
+            @foreach (var item in complete)
+            {
+                <div class="card m-1" style="width: stretch">
+                    <div class="card-body">
+                        <h5 class="card-title">@item.Name</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Created by: @item.CreatedBy.Name</h6>
+                        <p>@item.Description</p>
+                        <p>
+                            Deadline:
+                            @{
+                                DateTime d1 = DateTime.Now;
+                                DateTime d2 = @item.EndDate;
+                                TimeSpan difference = d2 - d1;
+
+                                var days = difference.TotalDays;
+
+                            }
+                            @if (days < 0)
+                            {
+                                days = 0;
+                            }
+
+                            @((int)days) days
+                        </p>
+                        <p class="text-muted">
+                            Assigned to:
+                            <span class="text-dark">
+                                @string.Join(", ", item.InvolvedEmployees.Select(x => x.Employee.Name).ToList());
+                            </span>
+                        </p>
+                        <span>
+                            <a class="card-link" asp-controller="Tasks" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                            @*<a class="btn btn-sm btn-success float-right" asp-controller="Tasks" asp-action="TaskComplete" asp-route-TaskId="@item.Id"><i class='bx bx-check-double'></i> Complete</a>*@
+                        </span>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

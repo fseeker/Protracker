@@ -1,0 +1,192 @@
+﻿@model demo_7.Models.Project;
+
+@{
+    ViewData["Title"] = Model.Name;
+    List<Employee> dev = ViewBag.Dev;
+}
+<style>
+    h6 {
+        font-weight: bold;
+    }
+</style>
+
+<div class="row">
+    <div class="col-sm-4">
+        <p>Project ID: @Html.DisplayFor(Model => Model.Id)</p>
+    </div>
+    <div class="col-sm-4"></div>
+    <div class="col-sm-4">
+        <p class="text-right">Initialized on: @Model.StartDate.ToString("dd-MMM-yyyy")</p>
+    </div>
+</div>
+
+<div class="row" style="padding-bottom:25px;">
+    <div class="col-sm-9">
+        <h3>@Html.DisplayFor(model => model.Name)</h3>
+        <div class="row">
+            <div class="col-sm-4">
+                <p>By: @Html.DisplayFor(model => model.Author)</p>
+            </div>
+            <div class="col-sm-2"></div>
+            <div class="col-sm-6">
+                <p class="text-right">Initialization Date: @Model.StartDate.ToString("dd-MMM-yyyy")</p>
+            </div>
+        </div>
+        <p>@Html.DisplayFor(model => model.Description)</p>
+        <hr />
+        <h6>@Model.Status</h6>
+        <hr />
+        <div class="container-fluid p-0">
+            <div class="row">
+                <div class="col-sm-9">
+                    <h6>Involved Employees</h6>
+                    <p>
+                        @string.Join(", ", ViewBag.DevList)
+                    </p>
+                </div>
+                <div class="col-sm-3">
+                    <div class="float-right">
+                        <a class="btn btn-success m-2" asp-controller="Project" asp-action="SetEmployee" asp-route-Id="@Model.Id">Add Employees</a>
+                        <a class="btn btn-info m-2" asp-controller="Project" asp-action="EditEmployee" asp-route-ProjectId="@Model.Id">Edit Employees</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <div class="col-sm-3">
+        <div class="card float-right" style="max-height: auto; max-width: 250px; border:groove;">
+            <img class="card-img-top" src="~/Images/pngtree-user-vector-avatar-png-image_1541962.jpg" />
+            <div class="card-body">
+                <h5 class="text-center">@Html.DisplayFor(model => model.ProjectHead.Name)</h5>
+                <h6 class="text-center" style="font-weight:bold">Project Head</h6>
+                <p>@Html.DisplayFor(model => model.ProjectHead.Designation)</p>
+                <a asp-controller="Employee" asp-action="Details" asp-route-id="@Model.ProjectHead.Id" class="btn btn-primary">Profile</a>
+            </div>
+
+        </div>
+    </div>
+</div>
+<hr />
+
+<div class="container" style="padding-top:25px;">
+    <div class="row">
+        <div class="col-sm-4">
+            <h3>Update History</h3>
+        </div>
+        <div class="col-sm-8">
+            <a class="btn btn-success float-right" style="margin-left: 15px" asp-controller="Project" asp-action="UpdateProject" asp-route-projectId="@Model.Id">Show all</a>
+            <a class="btn btn-primary float-right" style="margin: auto" asp-controller="Project" asp-action="CreateUpdate" asp-route-projectId="@Model.Id">Create New Update</a>
+        </div>
+
+    </div>
+    @{
+        var update = ViewBag.update as List<UpdateProject>;
+    }
+    <table class="table table-bordered table-dark">
+        <tr>
+            <th>
+                <p>Push Date</p>
+            </th>
+            <th>
+                <p>Version</p>
+            </th>
+            <th>
+                <p>Status</p>
+            </th>
+            <th>
+                <p>Description</p>
+            </th>
+        </tr>
+        <tbody>
+            @foreach (var item in update)
+            {
+                <tr>
+                    <td>
+                        @item.PushDate
+                    </td>
+                    <td>
+                        @item.Version
+                    </td>
+                    <td>
+                        @item.Status
+                    </td>
+                    <td>
+                        @item.Description
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<hr />
+<div class="container" style="padding-top:25px;">
+    <div class="row">
+        <div class="col-sm-4">
+            <h3>Tasks</h3>
+        </div>
+        <div class="col-sm-8">
+            <a class="btn btn-success float-right" style="margin-left: 15px" asp-controller="Tasks" asp-action="ShowTasks" asp-route-id="@Model.Id">Show all</a>
+            <a class="btn btn-primary float-right" style="margin: auto" asp-controller="Tasks" asp-action="CreateTask" asp-route-projectId="@Model.Id">Create New Task</a>
+        </div>
+
+    </div>
+
+    <table class="table table-bordered table-info">
+        <thead class="table-dark">
+            <tr>
+                <th>
+                    <p>Name</p>
+                </th>
+                <th>
+                    <p>Created on</p>
+                </th>
+                <th>
+                    <p>Created by</p>
+                </th>
+                <th>
+                    <p>Assigned to</p>
+                </th>
+                <th>
+                    <p>Status</p>
+                </th>
+                <th>
+                    <p>Actions</p>
+                </th>
+            </tr>
+        </thead>
+        @{
+            var task = ViewBag.task as List<Tasks>;
+        }
+
+        <tbody>
+            @foreach (var item in task)
+            {
+                <tr>
+                    <td>
+                        @item.Name
+                    </td>
+                    <td>
+                        @item.CreateDate
+                    </td>
+                    <td>
+                        @item.CreatedBy.Name
+                        
+                    </td>
+                    <td>
+                        @string.Join(", ", item.InvolvedEmployees.Select(t => t.Employee.Name).ToList())
+                    </td>
+                    <td>
+                        @item.Status
+                    </td>
+                    <td>
+                        <a class="btn btn-success m-1 btn-sm" asp-controller="Tasks" asp-action="TaskComplete" asp-route-TaskId="@item.Id" asp-route-ProjectId="@Model.Id">Mark as Complete</a>
+                        <a class="btn btn-info m-1 btn-sm" asp-controller="Tasks" asp-action="TaskUrgent" asp-route-TaskId="@item.Id" asp-route-ProjectId="@Model.Id">Mark as Urgent</a>
+                        <a class="btn btn-success m-1 btn-sm" asp-controller="Tasks" asp-action="AssignTask" asp-route-id="@item.Id" asp-route-ProjectId="@Model.Id">Add Employees</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

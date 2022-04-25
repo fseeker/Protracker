@@ -1,0 +1,87 @@
+﻿@model PaginatedList<Employee>
+
+@{ 
+    ViewData["Title"] = "AssignTask";
+
+    int CurrentPage = Model.PageIndex;
+    int TotalPage = Model.TotalPages;
+    var next = Model.HasNextPage ? "" : "disabled";
+    var prev = Model.HasPreviousPage ? "" : "disabled";
+
+    int i = (CurrentPage - 1) * ViewBag.pSize + 1;
+}
+
+<table class="table table-bordered">
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @item.Name
+            </td>
+            <td>
+                @item.Designation
+            </td>
+            <td>
+                <form asp-action="AssignTask">
+                    <input type="hidden" value="@item.Id" name="empId" />
+                    <input type="hidden" value="@ViewBag.TaskId" name="taskId" />
+                    <input type="hidden" value="@ViewBag.ProjectId" name="projectId" />
+
+                    <button class="btn btn-outline-success">Add Employee</button>
+                </form>
+            </td>
+        </tr>
+    }
+</table>
+
+
+<ul class="pagination">
+    <li class="">
+        <a asp-action="AssignTask"
+           asp-route-sortOrder="@ViewBag.sortparam"
+           asp-route-usertext="@ViewBag.sword"
+           asp-route-page="1" class="btn btn-dark">First</a>
+    </li>
+    <li class="page-item @prev">
+        <a asp-action="AssignTask"
+           asp-route-sortOrder="@ViewBag.sortparam"
+           asp-route-usertext="@ViewBag.sword"
+           asp-route-page="@(CurrentPage-1)" class="btn btn-dark @prev">Prev</a>
+    </li>
+    @for (int k = 1; k <= Model.TotalPages; k++)
+    {
+        if (k >= CurrentPage - 5 && k <= CurrentPage + 5)
+        {
+            if (k == CurrentPage)
+            {
+                <li class="page-item @(k==CurrentPage?"active":"")">
+                    <a asp-action="AssignTask"
+                       asp-route-sortOrder="@ViewBag.sortparam"
+                       asp-route-usertext="@ViewBag.sword"
+                       asp-route-page="@k" class="btn btn-secondary">@k</a>
+                </li>
+            }
+            else
+            {
+                <li class="page-item @(k==CurrentPage?"active":"")">
+                    <a asp-action="AssignTask"
+                       asp-route-sortOrder="@ViewBag.sortparam"
+                       asp-route-usertext="@ViewBag.sword"
+                       asp-route-page="@k" class="btn btn-dark">@k</a>
+                </li>
+            }
+        }
+    }
+    <li class="page-item @next">
+        <a asp-action="AssignTask"
+           asp-route-sortOrder="@ViewBag.sortparam"
+           asp-route-usertext="@ViewBag.sword"
+           asp-route-page="@(CurrentPage+1)" class="btn btn-dark @next">Next</a>
+    </li>
+    <li>
+        <a asp-action="AssignTask"
+           asp-route-sortOrder="@ViewBag.sortparam"
+           asp-route-usertext="@ViewBag.sword"
+           asp-route-page="@Model.TotalPages" class="btn btn-dark">Last</a>
+    </li>
+</ul>

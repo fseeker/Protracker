@@ -1,0 +1,141 @@
+@model IEnumerable<demo_7.Models.Project>
+
+@{
+    ViewData["Title"] = "Index";
+}
+<style>
+    tbody :hover {
+        /*border: 1px;*/
+        background: linear-gradient(white,gray);
+    }    
+
+    tbody a {
+        text-decoration: none;
+        color: darkblue;
+    }
+    tbody a:hover{
+        text-decoration: none;
+    }
+
+    td a {
+        display: block;
+        padding: 0px;
+        margin: 0px;
+        border: 5px;        
+    }
+
+    table td {
+        padding: 4px 0px;
+    }
+</style>
+<div class="row">
+    <div class="col-sm-6">
+        <h1>All Projects</h1>
+    </div>
+    <div class="col-sm-6">
+        <a asp-action="Create" class="btn btn-success float-right m-2">Create New</a>
+    </div>
+</div>
+<hr />
+<div class="row">
+    <div class="col-sm-4">
+        <form method="get">
+            <input class="bx-search" type="search" name="usertext" placeholder="Search" aria-label="Search" value="@ViewBag.searchWord" />
+        </form>
+    </div>
+    <div class="col-sm-3">
+        <p>Filter By: 
+            <select class="dropdown">
+                <option>Draft</option>
+                <option>In Progress</option>
+            </select>
+        </p>       
+    </div>
+    <div class="col-sm-3">
+        <p>Sort By: 
+            <select class="dropdown">
+                <option>Project Name</option>
+                <option>Created Date</option>
+            </select>
+        </p>        
+    </div>
+    <div class="col-sm-2">
+        <a href="#" class="btn btn-danger float-right">Reset Filters</a>
+    </div>
+</div>
+
+<table class="table">
+    <thead class="table-dark">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            @*<th>
+                    @Html.DisplayNameFor(model => model.Description)
+                </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.StartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Author)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Version)
+            </th>
+            <th>
+                Project Head
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr class="table-hover">
+                <td>
+                    <a asp-action="ProjectDetails" asp-route-id="@item.Id">
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </a>
+                </td>
+                @*<td>
+                        <a asp-action="Details" asp-route-id="@item.Id">
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </a>
+                    </td>*@
+                <td>
+                    <a asp-action="ProjectDetails" asp-route-id="@item.Id">
+                        @Html.DisplayFor(modelItem => item.StartDate)
+                    </a>
+                </td>
+                <td>
+                    <a asp-action="ProjectDetails" asp-route-id="@item.Id">
+                        @Html.DisplayFor(modelItem => item.Author)
+                    </a>
+                </td>
+                <td>
+                    <a asp-action="ProjectDetails" asp-route-id="@item.Id">
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </a>
+                </td>
+                <td>
+                    <a asp-action="ProjectDetails" asp-route-id="@item.Id">
+                        @Html.DisplayFor(modelItem => item.Version)
+                    </a>
+                </td>
+                <td>
+                    <a asp-action="ProjectDetails" asp-route-id="@item.Id">
+                        @Html.DisplayFor(modelItem => item.ProjectHead.Name)
+                    </a>
+                </td>
+                <td>
+                    @*<a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>*@
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,135 @@
+﻿@model IEnumerable<Tasks>
+@{ 
+    ViewData["Title"] = "Tasks";
+}
+<div class="row">
+    <div class="col-md-12">
+        <a class="btn btn-outline-dark float-left" asp-action="UnassignedTasks">Show All unassigned Tasks</a>
+        <a class="btn btn-info align-middle" asp-action="Index">Show All Tasks</a>
+        <a class="btn btn-primary float-right" asp-action="Create">Create new Task</a>
+    </div>    
+</div>
+<br />
+<div class="row">
+    <div class="col-md-12">
+        <h3>Today's Tasks</h3>
+        <table class="table table-bordered table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Status
+                    </th>
+                    <th>
+                        Created Date
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            
+            @foreach (var item in ViewBag.TodayTasks)
+            {
+                <tr>
+                    <td>
+                        @item.Name
+                    </td>
+                    <td>
+                        @item.Status
+                    </td>
+                    <td>
+                        @item.CreateDate
+                    </td>
+                    <td>
+                        <a class="btn btn-success" asp-action="TaskComplete" asp-route-TaskId="@item.Id">Mark as Complete</a>
+                        <a class="btn btn-danger" asp-action="TaskUrgent" asp-route-TaskId="@item.Id">Mark as Urgent</a>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <h3>Urgent Tasks</h3>
+        <table class="table table-bordered table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Status
+                    </th>
+                    <th>
+                        Created Date
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            
+            @foreach (var item in ViewBag.UrgentTasks)
+            {
+                <tr>
+                    <td>
+                        @item.Name
+                    </td>
+                    <td>
+                        @item.Status
+                    </td>
+                    <td>
+                        @item.CreateDate
+                    </td>
+                    <td>
+                        <button class="btn btn-success" asp-action="TaskComplete" asp-route-id="@item.Id">Mark as Complete</button>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <h3>Completed Tasks</h3>
+        <table class="table table-bordered table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Status
+                    </th>
+                    <th>
+                        Created Date
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            
+            @foreach (var item in ViewBag.CompletedTasks)
+            {
+                <tr>
+                    <td>
+                        @item.Name
+                    </td>
+                    <td>
+                        @item.Status
+                    </td>
+                    <td>
+                        @item.CreateDate
+                    </td>
+                    @*<td>
+                        <button class="btn btn-success" asp-action="TaskComplete" asp-route-id="@item.Id">Mark as Complete</button>
+                    </td>*@
+                </tr>
+            }
+        </table>
+    </div>
+
+</div>
